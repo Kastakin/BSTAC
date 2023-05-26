@@ -17,7 +17,7 @@ jobs:
     - name: Bootstrap compiler
       run: echo "${HOME}/qb64" >> $GITHUB_PATH
     - name: Compile
-      run: qb64 BSTAC.BAS -o BSTAC
+      run: ./qb64/qb64 BSTAC.BAS -o BSTAC
     - name: Create Release
       id: create_release
       uses: ncipollo/release-action@v1.11.2
