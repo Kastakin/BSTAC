@@ -30,6 +30,7 @@ jobs:
 
   linux-build:
     runs-on: ubuntu-20.04
+    needs: create-release
     permissions:
       contents: write
     steps:
@@ -50,6 +51,7 @@ jobs:
 
   macos-build:
     runs-on: macos-latest
+    needs: create-release
     permissions:
       contents: write
     steps:
@@ -70,6 +72,7 @@ jobs:
 
   windows-build:
     runs-on: windows-latest
+    needs: create-release
     env:
       PLATFORM: x64
     permissions:
