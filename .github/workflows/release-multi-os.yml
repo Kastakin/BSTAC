@@ -9,6 +9,8 @@ name: Release Multi Platform
 jobs:
   linux-build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
