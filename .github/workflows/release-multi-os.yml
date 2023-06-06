@@ -16,8 +16,6 @@ jobs:
       run: .ci/install.sh
     - name: Add Compiler to PATH
       run: echo "${HOME}/qb64" >> $GITHUB_PATH
-    # - name: Compile QB64
-    #   run: ./qb64/setup_lnx.sh
     - name: Compile BSTAC
       run: ./qb64/qb64 -xq BSTAC.BAS -o BSTAC
     - name: Create Release
@@ -26,7 +24,6 @@ jobs:
       with:
         tag: ${{ github.ref }}
         name: Release ${{ github.ref }}
-        bodyFile: release_text.md
         draft: false
         prerelease: false
       env:
@@ -35,7 +32,7 @@ jobs:
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: target/BSTAC
+        file: BSTAC
         asset_name: BSTAC-${{ github.ref }}
         tag: ${{ github.ref }}
         overwrite: true
