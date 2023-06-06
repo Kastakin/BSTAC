@@ -7,8 +7,29 @@ on:
 name: Release Multi Platform
 
 jobs:
-  linux-build:
+  create-release:
+    permissions:
+        contents: write
+    name: Create Release
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Create Release # Creates the release, assets will be added after building
+        id: create_release
+        uses: ncipollo/release-action@v1.11.2
+        with:
+          tag: ${{ github.ref }}
+          name: Release ${{ github.ref }}
+          bodyFile: release_text.md
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+  linux-build:
+    runs-on: ubuntu-20.04
     permissions:
       contents: write
     steps:
@@ -16,86 +37,72 @@ jobs:
       uses: actions/checkout@v3
     - name: Install QB64
       run: .ci/install.sh
-    - name: Add Compiler to PATH
-      run: echo "${HOME}/qb64" >> $GITHUB_PATH
     - name: Compile BSTAC
       run: ./qb64/qb64 -xq BSTAC.BAS -o BSTAC
-    - name: Create Release
-      id: create_release
-      uses: ncipollo/release-action@v1.11.2
-      with:
-        tag: ${{ github.ref }}
-        name: Release ${{ github.ref }}
-        draft: false
-        prerelease: false
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Upload to Release
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: qb64/BSTAC
-        asset_name: BSTAC-${{ github.ref }}
+        asset_name: BSTAC-${{ github.ref }}-lnx
         tag: ${{ github.ref }}
         overwrite: true
 
-#   macos-build:
-#     runs-on: macos-latest
-#     if: "!contains(github.event.head_commit.message, 'ci-skip')"
-#     steps:
-#     - uses: actions/checkout@v2
-#     - name: Bootstrap compiler
-#       run: .ci/bootstrap.sh osx
-#     - name: Compile
-#       run: .ci/compile.sh
-#     - name: Publish
-#       if: github.event_name == 'push'
-#       run: .ci/deploy.sh osx
-#     - name: Upload
-#       uses: actions/upload-artifact@v3
-#       with: 
-#         name: qb64_${{ github.ref_name }}_${{ github.sha }}_osx
-#         path: /Users/runner/work/qb64/qb64_*.tar.gz
+  macos-build:
+    runs-on: macos-latest
+    permissions:
+      contents: write
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+    - name: Install QB64
+      run: .ci/install.sh macos
+    - name: Compile BSTAC
+      run: ./qb64/qb64 -xq BSTAC.BAS -o BSTAC
+    - name: Upload to Release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: qb64/BSTAC
+        asset_name: BSTAC-${{ github.ref }}-macos
+        tag: ${{ github.ref }}
+        overwrite: true
 
-#   windows-x86-build:
-#     runs-on: windows-latest
-#     env:
-#       PLATFORM: x86
-#     steps:
-#     - uses: actions/checkout@v3
-#     - name: Install QB64
-#       run: .ci/bootstrap32.bat
-#     - name: Compile
-#       run: .ci/compile.bat
-#     - name: Publish
-#       if: github.event_name == 'push'
-#       run: .ci/deploy.ps1
-#     - name: Upload
-#       uses: actions/upload-artifact@v3
-#       if: always()
-#       with: 
-#         name: qb64_${{ github.ref_name }}_${{ github.sha }}_win-x86
-#         path: D:\a\qb64\qb64_*.7z
+  windows-build:
+    runs-on: windows-latest
+    env:
+      PLATFORM: x64
+    permissions:
+      contents: write
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+    - name: Install QB64
+      run: .ci/install.cmd
+    - name: Compile BSTAC
+      run: ./qb64/qb64.exe -xq BSTAC.BAS -o BSTAC.exe
+    - name: Upload to Release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: qb64/BSTAC.exe
+        asset_name: BSTAC-${{ github.ref }}-win.exe
+        tag: ${{ github.ref }}
+        overwrite: true
 
-#   windows-x64-build:
-#     runs-on: windows-latest
-#     if: "!contains(github.event.head_commit.message, 'ci-skip')"
-#     env:
-#       PLATFORM: x64
-#     steps:
-#     - uses: actions/checkout@v2
-#     - name: Bootstrap compiler
-#       run: .ci/bootstrap.bat
-#     - name: Compile
-#       run: .ci/compile.bat
-#     - name: Publish
-#       if: github.event_name == 'push'
-#       run: .ci/deploy.ps1
-#     - name: Upload
-#       uses: actions/upload-artifact@v3
-#       with: 
-#         name: qb64_${{ github.ref_name }}_${{ github.sha }}_win-x64
-#         path: D:\a\qb64\qb64_*.7z
-
-# # ${{ github.event.repository.updated_at }}
-# # path: ${{ github.workspace }}\qb64_*.7z
+  rollback-release:
+    name: Rollback
+    if: ${{ failure() }}
+    needs: [build-linux, build-macos, build-windows]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Rollback
+        uses: author/action-rollback@stable
+        with:
+          tag: ${{ github.ref }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
