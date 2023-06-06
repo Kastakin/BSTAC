@@ -93,7 +93,7 @@ jobs:
   rollback-release:
     name: Rollback
     if: ${{ failure() }}
-    needs: [build-linux, build-macos, build-windows]
+    needs: [linux-build, macos-build, windows-build]
     runs-on: ubuntu-latest
     permissions:
       contents: write
