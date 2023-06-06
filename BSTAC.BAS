@@ -2730,8 +2730,8 @@ Sub DOUS
     ' it prints out the parameter values and errors, and correlation matrix
     ' it checks for any beta which is negative, if one is found IND is set =2
 
-    Print #2, Using " sigma     =###.####"; 
-    Print #2, " mean dev. =";SIGM
+    Print #2, Using " sigma     =###.####";SIGM
+    Print #2, " mean dev. =";
     Print #2, Using "###.###"; SRM
     Print #2, ""
     Print #2, Tab(15); "initial      refined"
