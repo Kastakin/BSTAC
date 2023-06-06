@@ -16,10 +16,10 @@ jobs:
       run: .ci/install.sh
     - name: Add Compiler to PATH
       run: echo "${HOME}/qb64" >> $GITHUB_PATH
-    - name: Compile QB64
-      run: ./qb64/setup_lnx.sh
+    # - name: Compile QB64
+    #   run: ./qb64/setup_lnx.sh
     - name: Compile BSTAC
-      run: ./qb64/qb64 BSTAC.BAS -o BSTAC
+      run: ./qb64/qb64 -xq BSTAC.BAS -o BSTAC
     - name: Create Release
       id: create_release
       uses: ncipollo/release-action@v1.11.2
