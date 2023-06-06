@@ -3,5 +3,5 @@ curl -L https://www.7-zip.org/a/7zr.exe -o 7zr.exe
 
 7zr.exe x qb64.7z
 
-cd qb64
-call setup_win.cmd
+@REM cd qb64
+@REM call setup_win.cmd

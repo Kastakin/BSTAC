@@ -11,8 +11,6 @@ tar -xf qb64.tar.gz
 mv qb64_* qb64
 cd qb64
 
-if [[ $OS == "macos" ]]; then
-    ./setup_osx.command
-else
+if [[ $OS != "macos" ]]; then
     ./setup_lnx.sh
 fi
