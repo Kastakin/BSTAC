@@ -24,11 +24,11 @@ For questions or suggestions please contact the maintainers:
 - [Silvia Berto](mailto:silvia.berto@unito.it) Associate Professor at University of Turin.
 - [Concetta De Stefano](mailto:concetta.destefano@unime.it) Full Professor at University of Messina.
 
-<p align="center">
-<table>
+
+
+<table align="center">
     <tr>
     <td><img src="images/UNIME.png" width="250"/></td>
     <td><img src="images/UNITO.png" width="250"/></td>
     </tr>
 </table>
-</p>
