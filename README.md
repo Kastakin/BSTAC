@@ -12,9 +12,9 @@ The original source code has been re-visioned to allow the compatibility with mo
 
 Information regarding the formalism and the algorithm inner workings is available in the last article produced by the group, hosted in this repository as well for preservation.
 
-[Download the Article]()
+[Download the Article](https://github.com/Kastakin/BSTAC/blob/main/docs/De%20Stefano%20et%20al.%20-%201993%20-%20IONIC%20STRENGTH%20DEPENDENCE%20OF%20FORMATION%20CONSTANTS.%20.pdf)
 
-Example of input files are available in the [Example folder]() (**WORK IN PROGRESS**)
+Example of input files are available in the [Example folder](https://github.com/Kastakin/BSTAC/tree/main/examples) (**WORK IN PROGRESS**)
 
 ## Known Issues
 
