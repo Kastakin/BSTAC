@@ -55,7 +55,7 @@ Common Shared NITER, UF, NSUB
 Common Shared NIV, NFILE$, OFILE$, SUM
 Common Shared TOL, IFIL
 Common Shared TIME1
-
+   
 Common Shared DLNAM, IP, IPI, NGAU, EPSIT, SUMP, JCK, JACK
 Common Shared CX(), HX(), ZAST(), DFI(), DI(), DIR()
 Common Shared DI2(), BETA(), CI(), TCR(), JCON(), EPSR()
@@ -226,7 +226,7 @@ Else
 End If
 
 Dim AVAILABLE As String
-
+   
 Const VGA = 12
 Const MCGA = 13
 Const EGA256 = 9
@@ -234,7 +234,7 @@ Const EGA64 = 8
 Const MONO = 10
 Const HERC = 3
 Const CGA = 2
-
+   
 Data "CO","EO","JA","JB","SL","PA","c0","c1","d0","d1","e0","e1"
 Data 0,.01,.05,.1,.15,.25,.5,.75,1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7
 ACCM = 1D-175
@@ -711,14 +711,14 @@ ISCC(2) = 2
 HH = 0
 BESTMODE = HERC
 ISC = 1
-
+    
 On Error GoTo VIDEOERR
 Screen BESTMODE
 On Error GoTo EGAERR
 TS = BESTMODE
 Screen 0
 On Error GoTo 0
-
+   
 IP = 1
 For IGRA = 1 To NTC
     TIT$ = TITL$(IGRA)
@@ -853,7 +853,7 @@ Select Case Err
 End Select
 
 patherr:
-
+   
 Print #2, ""
 Print #2, "main";
 For IER = 2 To NSUB: Print #2, " -> " + STER$(IER);: Next IER
@@ -958,7 +958,7 @@ Sub DINS
 
     Print #2, Chr$(12)
     Print #2, "program BSTAC4"
-    Print #2, "BASIC version 7.3 - 28/3/2001"
+    Print #2, "BASIC version 7.3 - 282001"
     Print #2, "INPUT filename: "; NFILE$
     Print #2, "OUTPUT device/filename: "; OFILE$
     Print #2, ""
@@ -1032,7 +1032,7 @@ Sub DINS
     For K = 1 To NMBE: Input #1, ZZ(K): Next K
 
     '  ZZ = charge of components
-
+   
     If ICD > 0 Then
         If ICD = 2 Then
             Input #1, CGE, DGE, EGE
@@ -1100,11 +1100,11 @@ Sub DINS
         '  CGM,DGM,EGM: parameters of DEBYE-HUCKEL equation
         '               [text eqn.(9b)] (only if ICD>0)
         '               (if program reads c0M,c1M,d0M,d1M,e0M,e1M set CGM=DGM=EGM=0)
-
+     
         657 For K = 1 To NMBE: Input #1, JQRM(K): Next K
 
         '  JQRM: stoichiometric coefficients
-
+     
         Input #1, KEYM
         If ICD > 0 Then Input #1, KEYCM, KEYDM, KEYEM
 
@@ -1118,7 +1118,7 @@ Sub DINS
         '               1: refines D
         '       KEYEM = 0: parameter E constant
         '               1: refines E
-
+     
         Input #1, NKA
         For J = 1 To NKA: Input #1, IKA(J): Next J
 
@@ -2439,291 +2439,6 @@ Sub FACT
     If J >= 1 GoTo 768
 End Sub
 
-'
-Sub GRAPH
-
-    ' subroutine per grafico
-
-    Dim COLABEL(80, 24), PXY$(80, 24)
-    Shared X0, X1, XA, XB, Y0, Y1, YA, YB, X, Y
-
-    Cls
-    KEY Off
-    For QQ = 1 To 80
-        For WW = 1 To 24
-            PXY$(QQ, WW) = ""
-        Next WW
-    Next QQ
-    IN$ = "<--": IN1$ = "   "
-
-    On Error GoTo 0
-
-    Screen TS
-    If ISC = 2 Then PP = 8 Else PP = 10
-    Line (107, 19)-(114, 26), 2, B
-    Screen 0
-    On ISC GOTO 10130, 10140, 10150, 10160
-    10130 FX1 = 1
-    FY1 = 1
-    RX = 23
-    RX1 = 25
-    MX = 720
-    MY = 348
-    GoTo 10170
-    10140 FX1 = 640# / 720#
-    FY1 = 200# / 348#
-    RX = 23
-    RX1 = 25
-    MX = 640
-    MY = 200
-    GoTo 10170
-    10150 FX1 = 640# / 720#
-    FY1 = 480# / 348#
-    RX = 27
-    RX1 = 30
-    MX = 640
-    MY = 480
-    GoTo 10170
-    10160 FX1 = 640# / 720#
-    FY1 = 1
-    RX = 23
-    RX1 = 25
-    MX = 640
-    MY = 348
-    10170 FX2 = 63 * FX1
-    FY2 = 28 * FY1
-    X0 = 60 * FX1
-    Y0 = 300 * FY1
-    X1 = 690 * FX1
-    Y1 = 20 * FY1
-    Cls
-    10370 Print TIT$
-    Print "min x     max x     min y     max y"
-    YA = YY!(1)
-    XA = XGX!(1)
-    XB = XA
-    YB = YA
-    For I = 1 To NX
-        If XGX!(I) > XB Then XB = XGX!(I)
-        If XGX!(I) < XA Then XA = XGX!(I)
-        If YY!(I) > YB Then YB = YY!(I)
-        If YY!(I) < YA Then YA = YY!(I)
-        If YGE!(I) > YB Then YB = YGE!(I)
-        If YGE!(I) < YA Then YA = YGE!(I)
-    Next I
-    Print Using "####.##   "; XA; XB; YA; YB
-    Input "Are these values to be changed (Y/N) "; A$
-    If A$ = "Y" Or A$ = "y" Then Input "new values "; XA, XB, YA, YB
-    XAB = XB - XA
-    YAB = YB - YA
-    Print
-    TX$ = "v"
-    TY$ = "E"
-    LX = Int(XB)
-    For I = 0 To 3
-        If LX >= 10 ^ I GoTo 10100
-        IX1 = I
-        IX2 = 4 - I
-        X$ = ""
-        GoTo 10110
-    10100 Next I
-    10110 LY = -Int(-Abs(YB))
-    For I = 2 To 3
-        If LY >= 10 ^ I GoTo 10120
-        IY1 = I
-        IY2 = 4 - I
-        Y$ = ""
-        GoTo 10310
-    10120 Next I
-    10310 Screen TS
-    LB1 = 0
-    GoSub RLABEL 'subroutine RLABEL
-    GoSub 10480 'subroutine VALXY
-    GoSub 10620 'subroutine CURVE
-    GoSub 10720 'subroutine PLOT
-    Exit Sub
-
-    ' subroutine VALXY
-
-    10480 Cls
-    If LB1 = 1 GoTo LB
-    PXY$(2, 1) = TIT$
-    LX = 2
-    LY = 6
-    For K = 0 To 5
-        X$ = Str$(CInt((XA + XAB * K / 5) * 10 ^ IX2) / 10 ^ IX2)
-        If Val(X$) >= 0 Then X$ = Right$(X$, Len(X$) - 1)
-        PXY$(7 + 14 * K + LX - Len(X$), RX) = X$
-        Y = YB - YAB * K / 5
-        If K = 5 Then Y = YA
-        If RX = 23 Then IR! = 4 Else IR! = 4.8
-        Y$ = Str$(CInt(Y * 10 ^ IY2) / 10 ^ IY2)
-        If Val(Y$) >= 0 Then
-            Y$ = Right$(Y$, Len(Y$) - 1)
-        Else
-            Y$ = Mid$(Y$, 1, 6)
-        End If
-        L1 = LY - Len(Y$)
-        If L1 <= 0 Then L1 = 1
-        PXY$(L1, 2 + IR! * K) = Y$
-    Next K
-    PXY$(71 - LX, RX) = Left$(TX$, 5)
-    PXY$(1, 4) = Left$(TY$, 5)
-    LB: GoSub GLABEL 'subroutine GLABEL
-    Line (X0, Y0)-(X1, Y1), , B
-    For K = 1 To 9
-        Line (X0 + FX2 * K, Y0)-(X0 + FX2 * K, Y0 - 5)
-        Line (X0, Y0 - FY2 * K)-(X0 + 7, Y0 - FY2 * K)
-    Next K
-    Return
-
-    '  subroutine CURVE
-
-    10620 K = 0
-    For I = 1 To NX
-        FX = FNX%(XGX!(I))
-        FY = FNY%(YY!(I))
-        If FX > X1 Then FX = X1
-        If FY > Y0 Then FY = Y0
-        If FX < X0 Or FY < Y1 Then K = 0: GoTo 10690
-        If K = 0 Then PSet (FX, FY): K = 1 Else Line -(FX, FY)
-    10690 Next I
-    For I = 1 To NX
-        FX = FNX%(XGX!(I))
-        FY = FNY%(YGE!(I))
-        If FX > X1 Then FX = X1
-        If FY > Y0 Then FY = Y0
-        If FX >= X0 And FY >= Y1 Then Circle (FX, FY), 4
-    Next I
-    Return
-
-    '  subroutine PLOT?
-
-    10720 Locate RX1, 1: Print "                                                                         ";
-    Locate RX1, 1
-    Color 7
-    Print "File, New graph , Quit (F/N/Q) ";
-    111 SC$ = UCase$(InKey$)
-    If SC$ = "" GoTo 111
-    If SC$ = "F" Then
-        Locate RX1, 1
-        Print "Name of file ?                                         ";
-        GoSub RNF 'subroutine RNF
-    End If
-    If SC$ = "F" Then Open NFS$ For Output As #6: GoTo 10770
-    If SC$ = "Q" Then IGR = 0
-    Cls
-    Color 7
-    Screen 0
-    Return
-    10770 FX1M = FX1
-    FX2M = FX2
-    FY1M = FY1
-    FY2M = FY2
-    X0M = X0
-    X1M = X1
-    Y0M = Y0
-    Y1M = Y1
-    RXM = RX
-    RX1M = RX1
-    FX1 = 640# / 720#
-    FY1 = 1
-    RX = 23
-    RX1 = 25
-    FX2 = 63 * FX1
-    FY2 = 28 * FY1
-    X0 = 60 * FX1
-    Y0 = 300 * FY1
-    X1 = 690 * FX1
-    Y1 = 20 * FY1
-    Print #6, "IN;IP1000,1000,9000,6000;"
-    Print #6, "SC0,640,0,348;SR1,2;"
-    Print #6, "SP1;PU;PA"; X0; Abs(Y0 - 348);
-    Print #6, "EA"; X1; Abs(Y1 - 348);
-    Print #6, "TL4,0;"
-    Print #6, "PU;PA0,0;"
-    Print #6, "TL100,0;"
-    Print #6, "PU;"
-    For QQ = 1 To 80
-        For WW = 1 To 23
-            If PXY$(QQ, WW) = "" GoTo NEX
-            Print #6, "SP" + Str$(COLABEL(QQ, WW)) + ";"
-            Print #6, "pa"; ((8 * QQ) - 9); ((Abs(CInt(13.92 * WW) - 348 - 4)));
-            Print #6, "lb"; PXY$(QQ, WW);
-            Print #6, Chr$(3)
-        NEX: Next WW
-    Next QQ
-    Print #6, "SP1;"
-    For K = 0 To 10
-        Print #6, "PA"; (X0 + FX2 * K); Abs(Y0 - 348); "PD;"
-        Print #6, "PA"; (X0 + FX2 * K); Abs((Y0 - 5) - 348); "PU";
-        Y = YA + YAB * K / 10
-        Print #6, "PA"; X0; Abs((Y0 - FY2 * K) - 348); "PD;"
-        Print #6, "PA"; (X0 + 7); Abs((Y0 - FY2 * K) - 348); "PU";
-    Next K
-    K = 0
-    Print #6, "SP0;"
-    For I = 1 To NX
-        FX = FNX%(XGX!(I))
-        FY = FNY%(YY!(I))
-        If FX > X1 Then FX = X1
-        If FY > Y0 Then FY = Y0
-        FYC = Abs(FY - 348)
-        If FX < X0 Or FY < Y1 Then K = 0: GoTo 10990
-        If K = 0 Then
-            Print #6, "PU"; FX; FYC; "PD;": K = 1
-        Else
-            Print #6, "PA"; FX; FYC; "PD;"
-        End If
-    10990 Next I
-    Print #6, "PU;"
-    10992 Print #6, "SP0;"
-    X0 = X0M
-    Y0 = Y0M
-    X1 = X1M
-    Y1 = Y1M
-    RX = RXM
-    RX1 = RX1M
-    FX1 = FX1M
-    FX2 = FX2M
-    FY1 = FY1M
-    FY2 = FY2M
-    Close #6
-    GoTo 10720
-
-    ' subroutine RNF
-
-    RNF: NFS$ = ""
-    For CX = 1 To 30
-        CCC: C1$ = InKey$
-        If C1$ = "" Then GoTo CCC
-        If C1$ = Chr$(13) Then Return
-        If C1$ < Chr$(32) Or C1$ > Chr$(127) Then GoTo CCC
-        NFS$ = NFS$ + C1$
-        Locate 25, 16: Print NFS$;
-    Next CX
-    Return
-
-    ' subroutine GLABEL
-
-    GLABEL: For QQ = 1 To 80
-        For WW = 1 To 24
-            If PXY$(QQ, WW) <> "" Then Locate WW, QQ: Print PXY$(QQ, WW)
-        Next WW
-    Next QQ
-    Return
-
-    ' subroutine RLABEL
-
-    RLABEL: For QQ = 1 To 6
-        For WW = 2 To 23
-            PXY$(QQ, WW) = ""
-        Next WW
-    Next QQ
-    For WW = 1 To 80: PXY$(WW, 23) = "": Next WW
-    Return
-End Sub
-
 Sub DOUS
 
     ' the output routine which performs two functions
@@ -3024,4 +2739,296 @@ Sub STANS (IPRST)
         Next IP
         888 IPI = IPF + 1
     Next JTC
+End Sub
+
+Function FNX% (X)
+    FNX% = X0 + (X1 - X0) * (X - XA) / (XB - XA) + .5
+End Function
+Function FNY% (Y)
+    FNY% = Y0 + (Y1 - Y0) * (Y - YA) / (YB - YA) + .5
+End Function
+
+'
+Sub GRAPH
+
+    ' subroutine per grafico
+
+    Dim COLABEL(80, 24), PXY$(80, 24)
+    Shared X0, X1, XA, XB, Y0, Y1, YA, YB, X, Y
+
+    Cls
+    KEY Off
+    For QQ = 1 To 80
+        For WW = 1 To 24
+            PXY$(QQ, WW) = ""
+        Next WW
+    Next QQ
+    IN$ = "<--": IN1$ = "   "
+
+    On Error GoTo 0
+
+    Screen TS
+    If ISC = 2 Then PP = 8 Else PP = 10
+    Line (107, 19)-(114, 26), 2, B
+    Screen 0
+    On ISC GOTO 10130, 10140, 10150, 10160
+    10130 FX1 = 1
+    FY1 = 1
+    RX = 23
+    RX1 = 25
+    MX = 720
+    MY = 348
+    GoTo 10170
+    10140 FX1 = 640# / 720#
+    FY1 = 200# / 348#
+    RX = 23
+    RX1 = 25
+    MX = 640
+    MY = 200
+    GoTo 10170
+    10150 FX1 = 640# / 720#
+    FY1 = 480# / 348#
+    RX = 27
+    RX1 = 30
+    MX = 640
+    MY = 480
+    GoTo 10170
+    10160 FX1 = 640# / 720#
+    FY1 = 1
+    RX = 23
+    RX1 = 25
+    MX = 640
+    MY = 348
+    10170 FX2 = 63 * FX1
+    FY2 = 28 * FY1
+    X0 = 60 * FX1
+    Y0 = 300 * FY1
+    X1 = 690 * FX1
+    Y1 = 20 * FY1
+    Cls
+    10370 Print TIT$
+    Print "min x     max x     min y     max y"
+    YA = YY!(1)
+    XA = XGX!(1)
+    XB = XA
+    YB = YA
+    For I = 1 To NX
+        If XGX!(I) > XB Then XB = XGX!(I)
+        If XGX!(I) < XA Then XA = XGX!(I)
+        If YY!(I) > YB Then YB = YY!(I)
+        If YY!(I) < YA Then YA = YY!(I)
+        If YGE!(I) > YB Then YB = YGE!(I)
+        If YGE!(I) < YA Then YA = YGE!(I)
+    Next I
+    Print Using "####.##   "; XA; XB; YA; YB
+    Input "Are these values to be changed (Y/N) "; A$
+    If A$ = "Y" Or A$ = "y" Then Input "new values "; XA, XB, YA, YB
+    XAB = XB - XA
+    YAB = YB - YA
+    Print
+    TX$ = "v"
+    TY$ = "E"
+    LX = Int(XB)
+    For I = 0 To 3
+        If LX >= 10 ^ I GoTo 10100
+        IX1 = I
+        IX2 = 4 - I
+        X$ = ""
+        GoTo 10110
+    10100 Next I
+    10110 LY = -Int(-Abs(YB))
+    For I = 2 To 3
+        If LY >= 10 ^ I GoTo 10120
+        IY1 = I
+        IY2 = 4 - I
+        Y$ = ""
+        GoTo 10310
+    10120 Next I
+    10310 Screen TS
+    LB1 = 0
+    GoSub RLABEL 'subroutine RLABEL
+    GoSub 10480 'subroutine VALXY
+    GoSub 10620 'subroutine CURVE
+    GoSub 10720 'subroutine PLOT
+    Exit Sub
+
+    ' subroutine VALXY
+
+    10480 Cls
+    If LB1 = 1 GoTo LB
+    PXY$(2, 1) = TIT$
+    LX = 2
+    LY = 6
+    For K = 0 To 5
+        X$ = Str$(CInt((XA + XAB * K / 5) * 10 ^ IX2) / 10 ^ IX2)
+        If Val(X$) >= 0 Then X$ = Right$(X$, Len(X$) - 1)
+        PXY$(7 + 14 * K + LX - Len(X$), RX) = X$
+        Y = YB - YAB * K / 5
+        If K = 5 Then Y = YA
+        If RX = 23 Then IR! = 4 Else IR! = 4.8
+        Y$ = Str$(CInt(Y * 10 ^ IY2) / 10 ^ IY2)
+        If Val(Y$) >= 0 Then
+            Y$ = Right$(Y$, Len(Y$) - 1)
+        Else
+            Y$ = Mid$(Y$, 1, 6)
+        End If
+        L1 = LY - Len(Y$)
+        If L1 <= 0 Then L1 = 1
+        PXY$(L1, 2 + IR! * K) = Y$
+    Next K
+    PXY$(71 - LX, RX) = Left$(TX$, 5)
+    PXY$(1, 4) = Left$(TY$, 5)
+    LB: GoSub GLABEL 'subroutine GLABEL
+    Line (X0, Y0)-(X1, Y1), , B
+    For K = 1 To 9
+        Line (X0 + FX2 * K, Y0)-(X0 + FX2 * K, Y0 - 5)
+        Line (X0, Y0 - FY2 * K)-(X0 + 7, Y0 - FY2 * K)
+    Next K
+    Return
+
+    '  subroutine CURVE
+
+    10620 K = 0
+    For I = 1 To NX
+        FX = FNX%(XGX!(I))
+        FY = FNY%(YY!(I))
+        If FX > X1 Then FX = X1
+        If FY > Y0 Then FY = Y0
+        If FX < X0 Or FY < Y1 Then K = 0: GoTo 10690
+        If K = 0 Then PSet (FX, FY): K = 1 Else Line -(FX, FY)
+    10690 Next I
+    For I = 1 To NX
+        FX = FNX%(XGX!(I))
+        FY = FNY%(YGE!(I))
+        If FX > X1 Then FX = X1
+        If FY > Y0 Then FY = Y0
+        If FX >= X0 And FY >= Y1 Then Circle (FX, FY), 4
+    Next I
+    Return
+
+    '  subroutine PLOT?
+
+    10720 Locate RX1, 1: Print "                                                                         ";
+    Locate RX1, 1
+    ' Color 7
+    Print "File, New graph , Quit (F/N/Q) ";
+    111 SC$ = UCase$(InKey$)
+    If SC$ = "" GoTo 111
+    If SC$ = "F" Then
+        Locate RX1, 1
+        Print "Name of file ?                                         ";
+        GoSub RNF 'subroutine RNF
+    End If
+    If SC$ = "F" Then Open NFS$ For Output As #6: GoTo 10770
+    If SC$ = "Q" Then IGR = 0
+    Cls
+    Color 7
+    Screen 0
+    Return
+    10770 FX1M = FX1
+    FX2M = FX2
+    FY1M = FY1
+    FY2M = FY2
+    X0M = X0
+    X1M = X1
+    Y0M = Y0
+    Y1M = Y1
+    RXM = RX
+    RX1M = RX1
+    FX1 = 640# / 720#
+    FY1 = 1
+    RX = 23
+    RX1 = 25
+    FX2 = 63 * FX1
+    FY2 = 28 * FY1
+    X0 = 60 * FX1
+    Y0 = 300 * FY1
+    X1 = 690 * FX1
+    Y1 = 20 * FY1
+    Print #6, "IN;IP1000,1000,9000,6000;"
+    Print #6, "SC0,640,0,348;SR1,2;"
+    Print #6, "SP1;PU;PA"; X0; Abs(Y0 - 348);
+    Print #6, "EA"; X1; Abs(Y1 - 348);
+    Print #6, "TL4,0;"
+    Print #6, "PU;PA0,0;"
+    Print #6, "TL100,0;"
+    Print #6, "PU;"
+    For QQ = 1 To 80
+        For WW = 1 To 23
+            If PXY$(QQ, WW) = "" GoTo NEX
+            Print #6, "SP" + Str$(COLABEL(QQ, WW)) + ";"
+            Print #6, "pa"; ((8 * QQ) - 9); ((Abs(CInt(13.92 * WW) - 348 - 4)));
+            Print #6, "lb"; PXY$(QQ, WW);
+            Print #6, Chr$(3)
+        NEX: Next WW
+    Next QQ
+    Print #6, "SP1;"
+    For K = 0 To 10
+        Print #6, "PA"; (X0 + FX2 * K); Abs(Y0 - 348); "PD;"
+        Print #6, "PA"; (X0 + FX2 * K); Abs((Y0 - 5) - 348); "PU";
+        Y = YA + YAB * K / 10
+        Print #6, "PA"; X0; Abs((Y0 - FY2 * K) - 348); "PD;"
+        Print #6, "PA"; (X0 + 7); Abs((Y0 - FY2 * K) - 348); "PU";
+    Next K
+    K = 0
+    Print #6, "SP0;"
+    For I = 1 To NX
+        FX = FNX%(XGX!(I))
+        FY = FNY%(YY!(I))
+        If FX > X1 Then FX = X1
+        If FY > Y0 Then FY = Y0
+        FYC = Abs(FY - 348)
+        If FX < X0 Or FY < Y1 Then K = 0: GoTo 10990
+        If K = 0 Then
+            Print #6, "PU"; FX; FYC; "PD;": K = 1
+        Else
+            Print #6, "PA"; FX; FYC; "PD;"
+        End If
+    10990 Next I
+    Print #6, "PU;"
+    10992 Print #6, "SP0;"
+    X0 = X0M
+    Y0 = Y0M
+    X1 = X1M
+    Y1 = Y1M
+    RX = RXM
+    RX1 = RX1M
+    FX1 = FX1M
+    FX2 = FX2M
+    FY1 = FY1M
+    FY2 = FY2M
+    Close #6
+    GoTo 10720
+
+    ' subroutine RNF
+
+    RNF: NFS$ = ""
+    For CX = 1 To 30
+        CCC: C1$ = InKey$
+        If C1$ = "" Then GoTo CCC
+        If C1$ = Chr$(13) Then Return
+        If C1$ < Chr$(32) Or C1$ > Chr$(127) Then GoTo CCC
+        NFS$ = NFS$ + C1$
+        Locate 25, 16: Print NFS$;
+    Next CX
+    Return
+
+    ' subroutine GLABEL
+
+    GLABEL: For QQ = 1 To 80
+        For WW = 1 To 24
+            If PXY$(QQ, WW) <> "" Then Locate WW, QQ: Print PXY$(QQ, WW)
+        Next WW
+    Next QQ
+    Return
+
+    ' subroutine RLABEL
+
+    RLABEL: For QQ = 1 To 6
+        For WW = 2 To 23
+            PXY$(QQ, WW) = ""
+        Next WW
+    Next QQ
+    For WW = 1 To 80: PXY$(WW, 23) = "": Next WW
+    Return
 End Sub
