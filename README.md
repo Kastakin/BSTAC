@@ -8,7 +8,15 @@ This repository contains contains the original source code of the BSTAC software
 
 The original source code has been re-visioned to allow the compatibility with modern systems and binaries for those are compiled through GitHub Actions and are downloadable from the [Release page](https://github.com/Kastakin/BSTAC/releases).
 
-## Knwon Issues
+## Learning Materials
+
+Information regarding the formalism and the algorithm inner workings is available in the last article produced by the group, hosted in this repository as well for preservation.
+
+[Download the Article]()
+
+Example of input files are available in the [Example folder]() (**WORK IN PROGRESS**)
+
+## Known Issues
 
 Some functionalities only partially working due to the technical debt of the original code base, it is our aim to reintegrate these as soon as possible. In particular:
 
@@ -23,8 +31,6 @@ For questions or suggestions please contact the maintainers:
 - [Gabriele Lando](mailto:gabriele.lando@unime.it) Associate Professor at University of Messina.
 - [Silvia Berto](mailto:silvia.berto@unito.it) Associate Professor at University of Turin.
 - [Concetta De Stefano](mailto:concetta.destefano@unime.it) Full Professor at University of Messina.
-
-
 
 <table align="center">
     <tr>
