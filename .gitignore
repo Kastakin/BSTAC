@@ -1,0 +1,40 @@
+# Ignore compiled binaries
+*.class
+*.o
+*.dll
+*.exe
+
+# Ignore build output directories
+/bin/
+/build/
+/dist/
+
+# Ignore package manager directories
+/node_modules/
+/vendor/
+
+# Ignore log files
+*.log
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore user-specific files
+/.env
+/.env.local
+/.env.*.local
+.env.local.php
+.env.php
+.env.*.php
+
+# Ignore editor-specific files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Ignore backup files
+*~
+*.bak
+*.swp
