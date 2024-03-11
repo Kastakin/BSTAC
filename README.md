@@ -14,7 +14,7 @@ Information regarding the formalism and the algorithm inner workings is availabl
 
 [Download the Article](https://github.com/Kastakin/BSTAC/blob/main/docs/De%20Stefano%20et%20al.%20-%201993%20-%20IONIC%20STRENGTH%20DEPENDENCE%20OF%20FORMATION%20CONSTANTS.%20.pdf)
 
-Example of input files are available in the [Example folder](https://github.com/Kastakin/BSTAC/tree/main/examples) (**WORK IN PROGRESS**)
+Examples of input files and instructions to compile the input files are available in the [Example folder](https://github.com/Kastakin/BSTAC/tree/main/examples).
 
 ## Known Issues
 
