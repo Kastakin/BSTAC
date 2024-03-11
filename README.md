@@ -18,7 +18,7 @@ Example of input files are available in the [Example folder](https://github.com/
 
 ## Known Issues
 
-Some functionalities only partially working due to the technical debt of the original code base, it is our aim to reintegrate these as soon as possible. In particular:
+Some functionalities are only partially working due to the technical debt of the original code base, it is our aim to reintegrate these as soon as possible. In particular:
 
 - Graphical output is only partially working due to incompatible and obsolete video modes.
 
