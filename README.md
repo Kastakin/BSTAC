@@ -4,7 +4,7 @@
 
 </p>
 
-This repository contains contains the original source code of the BSTAC software. It was developed by Prof. Sammartano et al. at the University of Messina between the 70s and 90s. Written in QBASIC V4.5 (Quick Basic) it allows the optimization of stability constants from potentiometric titration data.
+This repository contains the original source code of the BSTAC software. It was developed by Prof. Sammartano et al. at the University of Messina between the 70s and 90s. Written in QBASIC V4.5 (Quick Basic) it allows the optimization of stability constants from potentiometric titration data.
 
 The original source code has been re-visioned to allow the compatibility with modern systems and binaries for those are compiled through GitHub Actions and are downloadable from the [Release page](https://github.com/Kastakin/BSTAC/releases).
 
